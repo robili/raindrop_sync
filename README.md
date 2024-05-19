@@ -12,6 +12,8 @@ ACCESS_TOKEN = 'abc123'
 
 In Raindrop you need three collections. One collection contains the list of urls you want to process (SOURCE_COLLECTION_ID), one is for storing the processed ones (PROCESSED_COLLECTION_ID) and the one for the ones that couldn't be processed (UNPROCESSED_COLLECTION_ID). You need to specify the IDs in main.py.
 
+You can also define the number of articles per run in main.py (ARTICLES_PER_RUN).
+
 ## Output
 
-The script will create a file with today's date in the current folder. This can then just be sent to your Kindle, uploaded to you Kobo Reader or whatever.
+The script will create a file with today's date in the current folder. This can then just be sent to your Kindle, uploaded to you Kobo Reader or whatever you use to consume text.

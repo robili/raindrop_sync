@@ -8,6 +8,7 @@ SOURCE_COLLECTION_ID = '36864622'
 PROCESSED_COLLECTION_ID = '44271309'
 UNPROCESSED_COLLECTION_ID = '44302142'
 URL = f'https://api.raindrop.io/rest/v1/raindrops/{SOURCE_COLLECTION_ID}/'
+ARTICLES_PER_RUN = 5
 
 
 def get_all_raindrops():
@@ -40,6 +41,7 @@ def get_all_raindrops():
 
     return raindrops
 
+
 def update_raindrop(id, no_process):
     headers = {
         'Authorization': f'Bearer {ACCESS_TOKEN}',
@@ -56,6 +58,7 @@ def update_raindrop(id, no_process):
     response = requests.put(url, json=data, headers=headers)
     print(response)
 
+
 if __name__ == '__main__':
     todays_date = datetime.now().strftime('%d%m%y')
     epub = get_page.epub_book_writer(todays_date)
@@ -67,7 +70,7 @@ if __name__ == '__main__':
             print(f"{raindrop['title']}: {raindrop['link']}")
             result = epub.add_chapter(raindrop['link'])
             update_raindrop(raindrop['_id'], result)
-            if counter == 5:
+            if counter == ARTICLES_PER_RUN:
                 break
             if result == 0:
                 counter = counter + 1
