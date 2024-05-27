@@ -2,6 +2,8 @@ import requests
 import acc
 import get_page
 from datetime import datetime
+import smtplib
+from email.message import EmailMessage
 
 ACCESS_TOKEN = acc.ACCESS_TOKEN
 SOURCE_COLLECTION_ID = '36864622'
@@ -9,6 +11,12 @@ PROCESSED_COLLECTION_ID = '44271309'
 UNPROCESSED_COLLECTION_ID = '44302142'
 URL = f'https://api.raindrop.io/rest/v1/raindrops/{SOURCE_COLLECTION_ID}/'
 ARTICLES_PER_RUN = 5
+
+EMAIL_SEND = acc.EMAIL_SEND
+EMAIL_PASS = acc.EMAIL_PASS
+KINDLE_EMAIL = acc.KINDLE_EMAIL
+SMTP_SERVER=acc.SMTP_SERVER
+SMTP_PORT=acc.SMTP_PORT
 
 
 def get_all_raindrops():
@@ -59,6 +67,22 @@ def update_raindrop(id, no_process):
     print(response)
 
 
+def send_mail(file_path, sender_email, sender_password, kindle_email, smtp_server, smtp_port):
+    msg = EmailMessage()
+    msg['From'] = sender_email
+    msg['To'] = kindle_email
+    msg['Subject'] = 'Raindrop'
+    
+    with open(file_path, 'rb') as f:
+        file_data = f.read()
+        file_name = f.name
+        msg.add_attachment(file_data, maintype='application', subtype='octet-stream', filename=file_name)
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.send_message(msg)
+
 if __name__ == '__main__':
     todays_date = datetime.now().strftime('%d%m%y')
     epub = get_page.epub_book_writer(todays_date)
@@ -77,4 +101,6 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    epub.write_epub_book()
+    file_destination = epub.write_epub_book()
+
+    send_mail(file_destination, EMAIL_SEND, EMAIL_PASS, KINDLE_EMAIL, SMTP_SERVER, SMTP_PORT)

@@ -61,7 +61,7 @@ class epub_book_writer():
         self.book.set_language('en')
 
 
-    def write_epub_book(self) -> None:
+    def write_epub_book(self) -> str:
         self.book.spine = self.chapter_list
         self.book.toc = self.table_of_contents
 
@@ -78,6 +78,8 @@ class epub_book_writer():
         epub.write_epub(f'{self.title}.epub', self.book, {})
 
         print(f'ePub book created successfully: {self.title}.epub')
+
+        return {self.title}.epub
 
 
 if __name__ == '__main__':
