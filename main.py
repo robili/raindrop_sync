@@ -83,6 +83,9 @@ def send_mail(file_path, sender_email, sender_password, kindle_email, smtp_serve
         server.login(sender_email, sender_password)
         server.send_message(msg)
 
+        print(f'ePub book created sent.')
+
+
 if __name__ == '__main__':
     todays_date = datetime.now().strftime('%d%m%y')
     epub = get_page.epub_book_writer(todays_date)

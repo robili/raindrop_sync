@@ -79,7 +79,7 @@ class epub_book_writer():
 
         print(f'ePub book created successfully: {self.title}.epub')
 
-        return {self.title}.epub
+        return f'{self.title}.epub'
 
 
 if __name__ == '__main__':

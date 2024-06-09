@@ -3,3 +3,4 @@ acc.py
 .DS_Store
 _pycache__/
 *.py[cod]
+*.epub
